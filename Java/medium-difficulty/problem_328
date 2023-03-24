@@ -1,0 +1,42 @@
+/*
+ * 328. Odd Even Linked List -
+ * 
+ * Given the head of a singly linked list, group all the nodes with odd indices together 
+ * followed by the nodes with even indices, and return the reordered list.
+ * The first node is considered odd, and the second node is even, and so on.
+ * Note that the relative order inside both the even and odd groups should remain as it was in the input.
+ * You must solve the problem in O(1) extra space complexity and O(n) time complexity.
+ */
+
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        
+        ListNode answer = new ListNode();
+        ListNode even = new ListNode();
+
+        ListNode answerTemp = answer;
+        ListNode evenTemp = even;
+        int i = 1;
+        while(head != null) {
+            // add all the odd indicies first into the answer listNode
+            if((i % 2) == 1) {
+                answerTemp.next = new ListNode(head.val, null);
+                answerTemp = answerTemp.next;
+            } else {
+                // add all the even indicies into its own listNode to be added on later
+                evenTemp.next = new ListNode(head.val, null);
+                evenTemp = evenTemp.next;
+            }
+            head = head.next;
+            i++;
+        }
+
+        answer = answer.next; // initial node is 0 so we do this to exclude it from the answer
+        even = even.next; // intitial node from even list is 0 so we do this for the same reason
+
+        // add the even list to the end
+        answerTemp.next = even;
+
+        return answer;
+    }
+}
