@@ -1,0 +1,58 @@
+# 235. Lowest Common Ancestor of a Binary Search Tree
+
+# Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.
+
+# According to the definition of LCA on Wikipedia: “The lowest common ancestor is 
+# defined between two nodes p and q as the lowest node in T that has both p and q as 
+# descendants (where we allow a node to be a descendant of itself).”
+
+
+class Solution(object):
+
+    lca = TreeNode(100000)
+    def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+
+        # DFs until p and q are found
+        # the LCA is the Lowest common ancestor found right before finding the second of p and q
+
+        # with every call to the next node make a new list that will hold all the children of that node
+        # if that list does not contain both p and q than return that list to be added to the parent of that node
+
+        # if that list does contain both p and q than check if the node with that list is smaller than the current LCA
+        # if it is than replace the current LCA with that node holding that list
+
+        self.lca.val = 100000
+        self.dfs(root, p, q)
+        
+        return self.lca
+
+    def dfs(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :type lca: TreeNode
+        :rtype: List[TreeNode]
+        """
+
+        thisList = []
+
+        if root is None:
+            return thisList
+
+        thisList.append(root)
+        thisList.extend(self.dfs(root.left, p, q))
+        thisList.extend(self.dfs(root.right, p, q))
+        
+        if  thisList.count(p) == 1 and thisList.count(q) == 1:
+                self.lca = root
+                print(self.lca)
+                thisList = []
+
+        return thisList
